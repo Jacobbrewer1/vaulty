@@ -8,10 +8,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/Jacobbrewer1/vaulty/pkg/logging"
-	"github.com/Jacobbrewer1/vaulty/pkg/vaulty"
+	"github.com/Jacobbrewer1/vaulty/vaulty"
 	_ "github.com/go-sql-driver/mysql"
-	vault2 "github.com/hashicorp/vault/api"
+	hashiVault "github.com/hashicorp/vault/api"
 	"github.com/jmoiron/sqlx"
 	"github.com/spf13/viper"
 )
@@ -24,7 +23,7 @@ type databaseConnector struct {
 	ctx            context.Context
 	client         vaulty.Client
 	vip            *viper.Viper
-	currentSecrets *vault2.Secret
+	currentSecrets *hashiVault.Secret
 }
 
 func NewDatabaseConnector(opts ...ConnectionOption) (DatabaseConnector, error) {
@@ -64,7 +63,7 @@ func (d *databaseConnector) ConnectDB() (*Database, error) {
 	db := NewDatabase(sqlxDb)
 
 	go func() {
-		err := vaulty.RenewLease(d.ctx, d.client, d.vip.GetString("vault.database.path"), d.currentSecrets, func() (*vault2.Secret, error) {
+		err := vaulty.RenewLease(d.ctx, d.client, d.vip.GetString("vault.database.path"), d.currentSecrets, func() (*hashiVault.Secret, error) {
 			slog.Warn("Vault lease expired, reconnecting to database")
 
 			vs, err := d.client.GetSecret(d.ctx, d.vip.GetString("vault.database.path"))
@@ -89,7 +88,7 @@ func (d *databaseConnector) ConnectDB() (*Database, error) {
 			return vs, nil
 		})
 		if err != nil {
-			slog.Error("Error renewing vault lease", slog.String(logging.KeyError, err.Error()))
+			slog.Error("Error renewing vault lease", slog.String(loggingKeyError, err.Error()))
 			os.Exit(1) // Forces new credentials to be fetched
 		}
 	}()
@@ -122,7 +121,7 @@ func createConnection(v *viper.Viper) (*sqlx.DB, error) {
 	return db, nil
 }
 
-func generateConnectionStr(v *viper.Viper, vs *vault2.Secret) string {
+func generateConnectionStr(v *viper.Viper, vs *hashiVault.Secret) string {
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s?timeout=90s&multiStatements=true&parseTime=true",
 		vs.Data["username"],
 		vs.Data["password"],
