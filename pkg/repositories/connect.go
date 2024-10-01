@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/Jacobbrewer1/vaulty/pkg/logging"
-	"github.com/Jacobbrewer1/vaulty/pkg/vault"
 	_ "github.com/go-sql-driver/mysql"
 	vault2 "github.com/hashicorp/vault/api"
 	"github.com/jmoiron/sqlx"
