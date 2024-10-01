@@ -27,4 +27,6 @@ output-format = "markdown"
 from-latest-tag = true
 
 [sections]
+Refactors = ["refactor"]
 Chores = ["chore"]
+Documentation = ["doc", "docs"]
