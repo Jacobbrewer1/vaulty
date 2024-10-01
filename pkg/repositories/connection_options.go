@@ -3,13 +3,14 @@ package repositories
 import (
 	"context"
 
+	"github.com/Jacobbrewer1/vaulty/pkg/vaulty"
 	hashiVault "github.com/hashicorp/vault/api"
 	"github.com/spf13/viper"
 )
 
 type ConnectionOption func(c *databaseConnector)
 
-func WithVaultClient(client vault.Client) ConnectionOption {
+func WithVaultClient(client vaulty.Client) ConnectionOption {
 	return func(c *databaseConnector) {
 		c.client = client
 	}

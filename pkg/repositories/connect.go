@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Jacobbrewer1/vaulty/pkg/logging"
+	"github.com/Jacobbrewer1/vaulty/pkg/vaulty"
 	_ "github.com/go-sql-driver/mysql"
 	vault2 "github.com/hashicorp/vault/api"
 	"github.com/jmoiron/sqlx"
@@ -21,7 +22,7 @@ type DatabaseConnector interface {
 
 type databaseConnector struct {
 	ctx            context.Context
-	client         vault.Client
+	client         vaulty.Client
 	vip            *viper.Viper
 	currentSecrets *vault2.Secret
 }
@@ -63,7 +64,7 @@ func (d *databaseConnector) ConnectDB() (*Database, error) {
 	db := NewDatabase(sqlxDb)
 
 	go func() {
-		err := vault.RenewLease(d.ctx, d.client, d.vip.GetString("vault.database.path"), d.currentSecrets, func() (*vault2.Secret, error) {
+		err := vaulty.RenewLease(d.ctx, d.client, d.vip.GetString("vault.database.path"), d.currentSecrets, func() (*vault2.Secret, error) {
 			slog.Warn("Vault lease expired, reconnecting to database")
 
 			vs, err := d.client.GetSecret(d.ctx, d.vip.GetString("vault.database.path"))
