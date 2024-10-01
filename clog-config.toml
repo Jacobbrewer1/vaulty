@@ -30,3 +30,4 @@ from-latest-tag = true
 Refactors = ["refactor"]
 Chores = ["chore"]
 Documentation = ["doc", "docs"]
+Features = ["feat", "feature"]
