@@ -34,7 +34,7 @@ jobs:
           wget "https://github.com/clog-tool/clog-cli/releases/download/v0.9.3/clog-v0.9.3-x86_64-unknown-linux-gnu.tar.gz"
           tar xvzf clog-v0.9.3-x86_64-unknown-linux-gnu.tar.gz
           ./clog -c ./clog-config.toml --setversion ${{ github.event.inputs.version }}
-          echo "CHANGELOG=$(cat changelog.md)" >> $GITHUB_ENV
+          echo "changelog=$(cat changelog.md)" >> $GITHUB_ENV
 
       - name: Create Tag
         run: |
@@ -45,7 +45,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           release_name: ${{ github.event.inputs.version }}
-          body: ${{ env.CHANGELOG }}
+          body: ${{ env.changelog }}
           tag: ${{ github.event.inputs.version }}
           draft: false
           prerelease: false
