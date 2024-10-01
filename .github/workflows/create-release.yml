@@ -41,10 +41,16 @@ jobs:
           cat changelog.md >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Create Tag
-        run: |
-          git tag -a ${{ github.event.inputs.version }} -F changelog.md
-          git push origin ${{ github.event.inputs.version }}
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ github.event.inputs.version }}',
+              sha: context.sha
+            })
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
