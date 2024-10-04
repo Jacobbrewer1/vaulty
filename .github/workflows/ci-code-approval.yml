@@ -71,7 +71,7 @@ jobs:
       - name: Make
         run: make pr-approval
 
-  mock-generation:
+  code-generation:
     name: "Mock Generation"
     runs-on: ubuntu-latest
     permissions:
@@ -91,8 +91,8 @@ jobs:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: git config --global url."https://x:${GITHUB_API_TOKEN}@github.com".insteadOf "https://github.com"
 
-      - name: "Run Mock Generation"
-        run: make mocks
+      - name: "Run Code Generation"
+        run: go generate ./...
 
       - name: "fmt"
         run: go fmt ./...
