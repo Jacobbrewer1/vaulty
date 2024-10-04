@@ -72,7 +72,7 @@ jobs:
         run: make pr-approval
 
   code-generation:
-    name: "Mock Generation"
+    name: "Code Generation"
     runs-on: ubuntu-latest
     permissions:
       contents: write
