@@ -7,9 +7,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to tag the release with"
+        description: 'What release version should be created?'
         required: true
-        type: string
+        type: choice
+        default: 'patch'
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
 
 concurrency:
   group: 'create-release'
@@ -35,7 +40,7 @@ jobs:
         run: |
           wget "https://github.com/clog-tool/clog-cli/releases/download/v0.9.3/clog-v0.9.3-x86_64-unknown-linux-gnu.tar.gz"
           tar xvzf clog-v0.9.3-x86_64-unknown-linux-gnu.tar.gz
-          ./clog -c ./.clog.toml --setversion ${{ github.event.inputs.version }}
+          ./clog -c ./.clog.toml --${{ github.event.inputs.version }}
 
       - name: Copy Changelog to Environment
         run: |
@@ -43,23 +48,30 @@ jobs:
           cat changelog.md >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
+      - name: Get the new version
+        id: get_version
+        run: |
+          # Get the current version through the changelog file
+          version=$(cat changelog.md | grep "###" | head -n 1 | cut -d ' ' -f 2)
+          echo "VERSION=$version" >> $GITHUB_ENV
+
       - name: Create tag
-        uses: actions/github-script@v5
+        uses: actions/github-script@v7
         with:
           script: |
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/${{ github.event.inputs.version }}',
+              ref: 'refs/tags/${{ env.VERSION }}',
               sha: context.sha
             })
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.event.inputs.version }}
+          name: ${{ env.VERSION }}
           body: ${{ env.CHANGELOG }}
-          tag_name: ${{ github.event.inputs.version }}
+          tag_name: ${{ env.VERSION }}
           draft: false
           prerelease: false
           generate_release_notes: false
