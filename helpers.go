@@ -7,5 +7,5 @@ func GetTransitCipherText(transitEncryptSecret *hashiVault.Secret) string {
 		return ""
 	}
 
-	return transitEncryptSecret.Data[TransitCipherText].(string)
+	return transitEncryptSecret.Data[TransitKeyCipherText].(string)
 }

@@ -3,9 +3,9 @@ package vaulty
 const (
 	loggingKeyError = "err"
 
-	pathTypeTransitDecrypt = "decrypt"
-	pathTypeTransitEncrypt = "encrypt"
+	pathKeyTransitDecrypt = "decrypt"
+	pathKeyTransitEncrypt = "encrypt"
 
-	TransitCipherText = "ciphertext"
-	TransitPlainText  = "plaintext"
+	TransitKeyCipherText = "ciphertext"
+	TransitKeyPlainText  = "plaintext"
 )
