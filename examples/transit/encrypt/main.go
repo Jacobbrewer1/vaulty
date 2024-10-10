@@ -32,5 +32,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println("Encrypted data:", vaulty.GetTransitCipherText(sec))
+	fmt.Println("Encrypted data:", vaulty.CipherTextFromSecret(sec))
 }
