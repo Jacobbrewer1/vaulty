@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Jacobbrewer1/vaulty"
+	"github.com/jacobbrewer1/vaulty"
 )
 
 const (
