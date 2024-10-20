@@ -1,4 +1,4 @@
-module github.com/Jacobbrewer1/vaulty
+module github.com/jacobbrewer1/vaulty
 
 go 1.23
 
