@@ -60,7 +60,7 @@ func WithKubernetesAuthDefault() ClientOption {
 		c.auth = func(v *hashiVault.Client) (*hashiVault.Secret, error) {
 			role := os.Getenv(envKubernetesRole)
 			if role == "" {
-				return nil, fmt.Errorf("KUBERNETES_ROLE environment variable not set")
+				return nil, fmt.Errorf("%s environment variable not set", envKubernetesRole)
 			}
 
 			return kubernetesLogin(v, role, auth.WithServiceAccountTokenPath(kubernetesServiceAccountTokenPath))
@@ -73,7 +73,7 @@ func WithKubernetesAuthFromEnv() ClientOption {
 		c.auth = func(v *hashiVault.Client) (*hashiVault.Secret, error) {
 			role := os.Getenv(envKubernetesRole)
 			if role == "" {
-				return nil, fmt.Errorf("KUBERNETES_ROLE environment variable not set")
+				return nil, fmt.Errorf("%s environment variable not set", envKubernetesRole)
 			}
 
 			return kubernetesLogin(v, role, auth.WithServiceAccountTokenEnv(envKubernetesToken))
