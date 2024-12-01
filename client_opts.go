@@ -26,10 +26,6 @@ func WithGeneratedVaultClient(vaultAddress string) ClientOption {
 
 func WithAddr(addr string) ClientOption {
 	return func(c *client) {
-		if c.config == nil {
-			c.config = hashiVault.DefaultConfig()
-		}
-
 		c.config.Address = addr
 	}
 }

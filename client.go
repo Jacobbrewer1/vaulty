@@ -11,7 +11,14 @@ import (
 )
 
 var (
+	// ErrSecretNotFound is returned when a secret is not found.
 	ErrSecretNotFound = hashiVault.ErrSecretNotFound
+
+	// ErrInvalidClient is returned when the client is nil.
+	ErrInvalidClient = errors.New("client is nil")
+
+	// ErrInvalidAuth is returned when the auth method is nil.
+	ErrInvalidAuth = errors.New("auth method is nil")
 )
 
 type ClientHandler interface {
@@ -49,7 +56,7 @@ func NewClient(opts ...ClientOption) (Client, error) {
 		ctx:       context.Background(),
 		kvv2Mount: "",
 		auth:      nil,
-		config:    new(hashiVault.Config),
+		config:    hashiVault.DefaultConfig(),
 		v:         nil,
 		authCreds: nil,
 	}
@@ -66,13 +73,13 @@ func NewClient(opts ...ClientOption) (Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unable to create vault client: %w", err)
 	} else if vc == nil {
-		return nil, errors.New("vault client is nil")
+		return nil, ErrInvalidClient
 	}
 
 	c.v = vc
 
 	if c.auth == nil {
-		return nil, errors.New("auth method is nil")
+		return nil, ErrInvalidAuth
 	}
 
 	authCreds, err := c.auth(c.v)
