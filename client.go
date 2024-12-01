@@ -37,13 +37,22 @@ type client struct {
 
 	auth loginFunc
 
+	config *hashiVault.Config
+
 	// Below are set on initialization
 	v         *hashiVault.Client
 	authCreds *hashiVault.Secret
 }
 
 func NewClient(opts ...ClientOption) (Client, error) {
-	c := new(client)
+	c := &client{
+		ctx:       context.Background(),
+		kvv2Mount: "",
+		auth:      nil,
+		config:    new(hashiVault.Config),
+		v:         nil,
+		authCreds: nil,
+	}
 
 	for _, opt := range opts {
 		opt(c)
@@ -53,9 +62,16 @@ func NewClient(opts ...ClientOption) (Client, error) {
 		c.ctx = context.Background()
 	}
 
-	if c.v == nil {
+	vc, err := hashiVault.NewClient(c.config)
+	if err != nil {
+		return nil, fmt.Errorf("unable to create vault client: %w", err)
+	} else if vc == nil {
 		return nil, errors.New("vault client is nil")
-	} else if c.auth == nil {
+	}
+
+	c.v = vc
+
+	if c.auth == nil {
 		return nil, errors.New("auth method is nil")
 	}
 

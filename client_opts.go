@@ -3,7 +3,6 @@ package vaulty
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"os"
 
 	hashiVault "github.com/hashicorp/vault/api"
@@ -18,18 +17,26 @@ func WithContext(ctx context.Context) ClientOption {
 	}
 }
 
+// WithGeneratedVaultClient creates a vault client with the given address.
+//
+// Deprecated: Use WithAddr instead for the same effect.
 func WithGeneratedVaultClient(vaultAddress string) ClientOption {
-	return func(c *client) {
-		config := hashiVault.DefaultConfig()
-		config.Address = vaultAddress
+	return WithAddr(vaultAddress)
+}
 
-		vc, err := hashiVault.NewClient(config)
-		if err != nil {
-			slog.Error("Error creating vault client", slog.String(loggingKeyError, err.Error()))
-			os.Exit(1)
+func WithAddr(addr string) ClientOption {
+	return func(c *client) {
+		if c.config == nil {
+			c.config = hashiVault.DefaultConfig()
 		}
 
-		c.v = vc
+		c.config.Address = addr
+	}
+}
+
+func WithConfig(config *hashiVault.Config) ClientOption {
+	return func(c *client) {
+		c.config = config
 	}
 }
 
