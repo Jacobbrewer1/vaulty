@@ -117,7 +117,7 @@ github.com/pelletier/go-toml/v2/unstable
 github.com/pmezard/go-difflib/difflib
 # github.com/rogpeppe/go-internal v1.10.0
 ## explicit; go 1.19
-# github.com/rs/zerolog v1.29.0
+# github.com/rs/zerolog v1.33.0
 ## explicit; go 1.15
 github.com/rs/zerolog
 github.com/rs/zerolog/internal/cbor
@@ -177,7 +177,7 @@ github.com/stretchr/testify/suite
 # github.com/subosito/gotenv v1.6.0
 ## explicit; go 1.18
 github.com/subosito/gotenv
-# github.com/vektra/mockery/v2 v2.49.1
+# github.com/vektra/mockery/v2 v2.52.1
 ## explicit; go 1.23
 github.com/vektra/mockery/v2
 github.com/vektra/mockery/v2/cmd
