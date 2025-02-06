@@ -37,11 +37,12 @@ func NewDatabaseConnector(opts ...ConnectionOption) (DatabaseConnector, error) {
 		c.ctx = context.Background()
 	}
 
-	if c.client == nil {
+	switch {
+	case c.client == nil:
 		return nil, errors.New("no vault client provided")
-	} else if c.vip == nil {
+	case c.vip == nil:
 		return nil, errors.New("no viper configuration provided")
-	} else if c.currentSecrets == nil {
+	case c.currentSecrets == nil:
 		return nil, errors.New("no current secrets provided")
 	}
 
