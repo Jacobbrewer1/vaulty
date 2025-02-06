@@ -9,7 +9,7 @@ type MockDatabaseConnector struct {
 	mock.Mock
 }
 
-// ConnectDB provides a mock function with given fields:
+// ConnectDB provides a mock function with no fields
 func (_m *MockDatabaseConnector) ConnectDB() (*Database, error) {
 	ret := _m.Called()
 
