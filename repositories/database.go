@@ -12,14 +12,14 @@ import (
 
 type Database struct {
 	*sqlx.DB
-	*sync.RWMutex
+	mx *sync.RWMutex
 }
 
 // NewDatabase establishes a database connection with the given Vault credentials
 func NewDatabase(db *sqlx.DB) *Database {
 	return &Database{
-		DB:      db,
-		RWMutex: new(sync.RWMutex),
+		DB: db,
+		mx: new(sync.RWMutex),
 	}
 }
 
@@ -72,8 +72,8 @@ func (d *Database) closeReplaceConnection(newDb *sqlx.DB) {
 func (d *Database) Close() error {
 	slog.Debug("Acquiring lock to close database connection")
 
-	d.Lock()
-	defer d.Unlock()
+	d.mx.Lock()
+	defer d.mx.Unlock()
 
 	slog.Debug("Lock acquired to close database connection")
 
@@ -85,8 +85,8 @@ func (d *Database) Close() error {
 }
 
 func (d *Database) PingContext(ctx context.Context) error {
-	d.RLock()
-	defer d.RUnlock()
+	d.mx.RLock()
+	defer d.mx.RUnlock()
 
 	return d.DB.PingContext(ctx)
 }

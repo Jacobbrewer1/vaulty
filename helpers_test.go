@@ -29,14 +29,14 @@ func TestNewClient(t *testing.T) {
 			name: "nil cipher text",
 			want: "",
 			input: &hashiVault.Secret{
-				Data: map[string]interface{}{},
+				Data: make(map[string]any),
 			},
 		},
 		{
 			name: "invalid cipher text",
 			want: "",
 			input: &hashiVault.Secret{
-				Data: map[string]interface{}{
+				Data: map[string]any{
 					TransitKeyCipherText: 1,
 				},
 			},
@@ -45,7 +45,7 @@ func TestNewClient(t *testing.T) {
 			name: "valid cipher text",
 			want: "cipher text",
 			input: &hashiVault.Secret{
-				Data: map[string]interface{}{
+				Data: map[string]any{
 					TransitKeyCipherText: "cipher text",
 				},
 			},
@@ -54,7 +54,7 @@ func TestNewClient(t *testing.T) {
 			name: "valid cipher text: empty",
 			want: "",
 			input: &hashiVault.Secret{
-				Data: map[string]interface{}{
+				Data: map[string]any{
 					TransitKeyCipherText: "",
 				},
 			},
@@ -63,6 +63,7 @@ func TestNewClient(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got := CipherTextFromSecret(tt.input)
 			require.Equal(t, tt.want, got)
 		})
