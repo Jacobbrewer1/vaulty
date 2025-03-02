@@ -9,7 +9,7 @@ require (
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/hashicorp/vault/api v1.16.0
 	github.com/hashicorp/vault/api/auth/approle v0.8.0
-	github.com/hashicorp/vault/api/auth/kubernetes v0.8.0
+	github.com/hashicorp/vault/api/auth/kubernetes v0.9.0
 	github.com/hashicorp/vault/api/auth/userpass v0.8.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/spf13/viper v1.19.0
