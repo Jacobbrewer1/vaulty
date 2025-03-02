@@ -1,8 +1,11 @@
 package vaulty
 
 const (
-	loggingKeyError      = "err"
-	loggingKeySecretName = "secret"
+	loggingKeyError         = "err"
+	loggingKeySecretName    = "secret"
+	loggingKeyResult        = "result"
+	loggingKeyRenewedAt     = "renewed_at"
+	loggingKeyLeaseDuration = "lease_duration"
 
 	pathKeyTransitDecrypt = "decrypt"
 	pathKeyTransitEncrypt = "encrypt"
