@@ -91,7 +91,7 @@ func (d *databaseConnector) ConnectDB() (*Database, error) {
 
 			return vs, nil
 		})
-		if err != nil {
+		if err != nil { // nolint:revive // Traditional error handling
 			slog.Error("Error renewing vault lease", slog.String(loggingKeyError, err.Error()))
 			os.Exit(1) // Forces new credentials to be fetched
 		}

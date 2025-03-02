@@ -25,7 +25,7 @@ func TestDatabaseSuite(t *testing.T) {
 
 func (s *databaseSuite) SetupTest() {
 	db, mock, err := sqlmock.New()
-	s.NoError(err)
+	s.Require().NoError(err)
 	s.mockDb = mock
 	s.sqlxDb = sqlx.NewDb(db, "sqlmock")
 	s.db = NewDatabase(s.sqlxDb)
@@ -49,7 +49,7 @@ func (s *databaseSuite) TestReconnect() {
 	s.mockDb.ExpectClose()
 	s.mockDb.ExpectPing()
 	err := s.db.Reconnect(s.ctx, newDb)
-	s.NoError(err)
+	s.Require().NoError(err)
 
 	// Ensure the new database connection is replaced.
 	s.Equal(newDb, s.db.DB)
