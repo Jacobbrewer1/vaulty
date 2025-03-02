@@ -39,7 +39,7 @@ linters-settings:
       - name: early-return
         severity: error
         disabled: false
-        exclude: [ "if err != nil {" ]
+        exclude: [ "" ]
         arguments:
           - "preserveScope"
           - "allowJump"
