@@ -7,7 +7,7 @@ toolchain go1.23.1
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/go-sql-driver/mysql v1.8.1
-	github.com/hashicorp/vault/api v1.15.0
+	github.com/hashicorp/vault/api v1.16.0
 	github.com/hashicorp/vault/api/auth/approle v0.8.0
 	github.com/hashicorp/vault/api/auth/kubernetes v0.8.0
 	github.com/hashicorp/vault/api/auth/userpass v0.8.0
@@ -61,7 +61,7 @@ require (
 	golang.org/x/crypto v0.32.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/mod v0.17.0 // indirect
-	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/term v0.28.0 // indirect
