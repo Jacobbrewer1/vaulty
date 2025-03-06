@@ -13,14 +13,23 @@ import (
 type Database struct {
 	*sqlx.DB
 	mx *sync.RWMutex
+
+	l *slog.Logger
 }
 
 // NewDatabase establishes a database connection with the given Vault credentials
-func NewDatabase(db *sqlx.DB) *Database {
-	return &Database{
+func NewDatabase(db *sqlx.DB, opts ...DatabaseOption) *Database {
+	dbConn := &Database{
 		DB: db,
 		mx: new(sync.RWMutex),
+		l:  slog.Default(),
 	}
+
+	for _, opt := range opts {
+		opt(dbConn)
+	}
+
+	return dbConn
 }
 
 // Reconnect will be called periodically to refresh the database connection
@@ -32,7 +41,7 @@ func (d *Database) Reconnect(ctx context.Context, db *sqlx.DB) error {
 	ctx, cancelContextFunc := context.WithTimeout(ctx, 7*time.Second)
 	defer cancelContextFunc()
 
-	slog.Debug("Reconnecting to database")
+	d.l.Debug("Reconnecting to database")
 
 	// wait until the database is ready or timeout expires
 	for {
@@ -42,14 +51,14 @@ func (d *Database) Reconnect(ctx context.Context, db *sqlx.DB) error {
 		}
 		select {
 		case <-time.After(500 * time.Millisecond):
-			slog.Debug("Database ping failed, retrying...")
+			d.l.Debug("Database ping failed, retrying...")
 			continue
 		case <-ctx.Done():
 			return fmt.Errorf("failed to successfully ping database before context timeout: %w", err)
 		}
 	}
 
-	slog.Info("New database connection established")
+	d.l.Info("New database connection established")
 
 	d.closeReplaceConnection(db)
 
@@ -57,7 +66,7 @@ func (d *Database) Reconnect(ctx context.Context, db *sqlx.DB) error {
 }
 
 func (d *Database) closeReplaceConnection(newDb *sqlx.DB) {
-	slog.Debug("Replacing database connection")
+	d.l.Debug("Replacing database connection")
 
 	// close the existing connection, if exists
 	if d.DB != nil {
@@ -66,16 +75,16 @@ func (d *Database) closeReplaceConnection(newDb *sqlx.DB) {
 
 	d.DB = newDb
 
-	slog.Debug("Database connection replaced")
+	d.l.Debug("Database connection replaced")
 }
 
 func (d *Database) Close() error {
-	slog.Debug("Acquiring lock to close database connection")
+	d.l.Debug("Acquiring lock to close database connection")
 
 	d.mx.Lock()
 	defer d.mx.Unlock()
 
-	slog.Debug("Lock acquired to close database connection")
+	d.l.Debug("Lock acquired to close database connection")
 
 	if d.DB != nil {
 		return d.DB.Close()

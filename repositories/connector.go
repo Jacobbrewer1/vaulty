@@ -21,13 +21,17 @@ type DatabaseConnector interface {
 
 type databaseConnector struct {
 	ctx            context.Context
+	l              *slog.Logger
 	client         vaulty.Client
 	vip            *viper.Viper
 	currentSecrets *hashiVault.Secret
 }
 
-func NewDatabaseConnector(opts ...ConnectionOption) (DatabaseConnector, error) {
-	c := new(databaseConnector)
+func NewDatabaseConnector(opts ...ConnectorOption) (DatabaseConnector, error) {
+	c := &databaseConnector{
+		ctx: context.Background(),
+		l:   slog.Default(),
+	}
 
 	for _, opt := range opts {
 		opt(c)
@@ -61,11 +65,13 @@ func (d *databaseConnector) ConnectDB() (*Database, error) {
 		return nil, fmt.Errorf("error connecting to database: %w", err)
 	}
 
+	d.l.Info("Database connection established")
+
 	db := NewDatabase(sqlxDb)
 
 	go func() {
-		err := vaulty.RenewLease(d.ctx, d.client, fmt.Sprintf("%s/%s", d.vip.GetString("vault.database.path"), d.vip.GetString("vault.database.role")), d.currentSecrets, func() (*hashiVault.Secret, error) {
-			slog.Warn("Vault lease expired, reconnecting to database")
+		err := vaulty.RenewLease(d.ctx, d.l, d.client, fmt.Sprintf("%s/%s", d.vip.GetString("vault.database.path"), d.vip.GetString("vault.database.role")), d.currentSecrets, func() (*hashiVault.Secret, error) {
+			d.l.Warn("Vault lease expired, reconnecting to database")
 
 			vs, err := d.client.Path(
 				d.vip.GetString("vault.database.role"),
@@ -87,7 +93,7 @@ func (d *databaseConnector) ConnectDB() (*Database, error) {
 				return nil, fmt.Errorf("error reconnecting to database: %w", err)
 			}
 
-			slog.Info("Database reconnected")
+			d.l.Info("Database reconnected")
 
 			return vs, nil
 		})
@@ -97,7 +103,7 @@ func (d *databaseConnector) ConnectDB() (*Database, error) {
 		}
 	}()
 
-	slog.Info("Database connection established with vault")
+	d.l.Info("Database connection established with vault")
 	return db, nil
 }
 
@@ -119,8 +125,6 @@ func createConnection(v *viper.Viper) (*sqlx.DB, error) {
 	if err := db.PingContext(ctx); err != nil {
 		return nil, fmt.Errorf("error connecting to database: %w", err)
 	}
-
-	slog.Info("Connected to database")
 
 	return db, nil
 }
