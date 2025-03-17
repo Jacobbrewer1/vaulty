@@ -2,8 +2,6 @@ module github.com/jacobbrewer1/vaulty
 
 go 1.24
 
-toolchain go1.24.0
-
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/go-sql-driver/mysql v1.9.0
@@ -14,7 +12,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.10.0
-	github.com/vektra/mockery/v2 v2.53.1
+	github.com/vektra/mockery/v2 v2.53.2
 )
 
 require (
