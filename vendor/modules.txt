@@ -27,6 +27,10 @@ github.com/go-jose/go-jose/v4/jwt
 # github.com/go-sql-driver/mysql v1.9.0
 ## explicit; go 1.21
 github.com/go-sql-driver/mysql
+# github.com/go-viper/mapstructure/v2 v2.2.1
+## explicit; go 1.18
+github.com/go-viper/mapstructure/v2
+github.com/go-viper/mapstructure/v2/internal/errors
 # github.com/hashicorp/errwrap v1.1.0
 ## explicit
 github.com/hashicorp/errwrap
@@ -56,7 +60,6 @@ github.com/hashicorp/go-sockaddr
 github.com/hashicorp/hcl
 github.com/hashicorp/hcl/hcl/ast
 github.com/hashicorp/hcl/hcl/parser
-github.com/hashicorp/hcl/hcl/printer
 github.com/hashicorp/hcl/hcl/scanner
 github.com/hashicorp/hcl/hcl/strconv
 github.com/hashicorp/hcl/hcl/token
@@ -91,9 +94,6 @@ github.com/jinzhu/copier
 ## explicit; go 1.10
 github.com/jmoiron/sqlx
 github.com/jmoiron/sqlx/reflectx
-# github.com/magiconair/properties v1.8.9
-## explicit; go 1.19
-github.com/magiconair/properties
 # github.com/mattn/go-colorable v0.1.14
 ## explicit; go 1.18
 github.com/mattn/go-colorable
@@ -130,9 +130,6 @@ github.com/ryanuber/go-glob
 # github.com/sagikazarmark/locafero v0.7.0
 ## explicit; go 1.21
 github.com/sagikazarmark/locafero
-# github.com/sagikazarmark/slog-shim v0.1.0
-## explicit; go 1.20
-github.com/sagikazarmark/slog-shim
 # github.com/sourcegraph/conc v0.3.0
 ## explicit; go 1.19
 github.com/sourcegraph/conc
@@ -153,14 +150,10 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.6
 ## explicit; go 1.12
 github.com/spf13/pflag
-# github.com/spf13/viper v1.19.0
-## explicit; go 1.20
+# github.com/spf13/viper v1.20.0
+## explicit; go 1.21.0
 github.com/spf13/viper
-github.com/spf13/viper/internal/encoding
 github.com/spf13/viper/internal/encoding/dotenv
-github.com/spf13/viper/internal/encoding/hcl
-github.com/spf13/viper/internal/encoding/ini
-github.com/spf13/viper/internal/encoding/javaproperties
 github.com/spf13/viper/internal/encoding/json
 github.com/spf13/viper/internal/encoding/toml
 github.com/spf13/viper/internal/encoding/yaml
@@ -178,7 +171,7 @@ github.com/stretchr/testify/suite
 # github.com/subosito/gotenv v1.6.0
 ## explicit; go 1.18
 github.com/subosito/gotenv
-# github.com/vektra/mockery/v2 v2.53.1
+# github.com/vektra/mockery/v2 v2.53.3
 ## explicit; go 1.23
 github.com/vektra/mockery/v2
 github.com/vektra/mockery/v2/cmd
@@ -192,12 +185,6 @@ go.uber.org/multierr
 # golang.org/x/crypto v0.33.0
 ## explicit; go 1.20
 golang.org/x/crypto/pbkdf2
-# golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac
-## explicit; go 1.22.0
-golang.org/x/exp/slices
-golang.org/x/exp/slog
-golang.org/x/exp/slog/internal
-golang.org/x/exp/slog/internal/buffer
 # golang.org/x/mod v0.23.0
 ## explicit; go 1.22.0
 golang.org/x/mod/internal/lazyregexp
@@ -262,9 +249,6 @@ golang.org/x/tools/internal/typesinternal
 golang.org/x/tools/internal/versions
 # gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
 ## explicit; go 1.11
-# gopkg.in/ini.v1 v1.67.0
-## explicit
-gopkg.in/ini.v1
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
