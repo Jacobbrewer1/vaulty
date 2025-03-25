@@ -3,6 +3,7 @@ package vaulty
 import (
 	"context"
 	"encoding/base64"
+	"errors"
 	"fmt"
 
 	hashiVault "github.com/hashicorp/vault/api"
@@ -75,8 +76,13 @@ func (c *SecretPath) TransitDecrypt(ctx context.Context, data string) (string, e
 		return "", fmt.Errorf("unable to decrypt data: %w", err)
 	}
 
+	decryptDataStr, ok := decryptData.Data[TransitKeyPlainText].(string)
+	if !ok {
+		return "", errors.New("unable to convert decrypted data to string")
+	}
+
 	// Decode the base64 encoded data
-	decodedData, err := base64.StdEncoding.DecodeString(decryptData.Data[TransitKeyPlainText].(string))
+	decodedData, err := base64.StdEncoding.DecodeString(decryptDataStr)
 	if err != nil {
 		return "", fmt.Errorf("unable to decode data: %w", err)
 	}
