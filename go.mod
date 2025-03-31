@@ -10,7 +10,7 @@ require (
 	github.com/hashicorp/vault/api/auth/kubernetes v0.9.0
 	github.com/hashicorp/vault/api/auth/userpass v0.9.0
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/spf13/viper v1.20.0
+	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.10.0
 	github.com/vektra/mockery/v2 v2.53.3
 )
