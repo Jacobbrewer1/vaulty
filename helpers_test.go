@@ -69,3 +69,40 @@ func TestNewClient(t *testing.T) {
 		})
 	}
 }
+
+func Test_UintToInt(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		in   uint
+		out  int
+		err  bool
+	}{
+		{
+			name: "max int",
+			in:   uint(maxInt),
+			out:  maxInt,
+			err:  false,
+		},
+		{
+			name: "max int + 1",
+			in:   uint(maxInt) + 1,
+			out:  0,
+			err:  true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			got, err := uintToInt(tt.in)
+			if tt.err {
+				require.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+			require.Equal(t, tt.out, got)
+		})
+	}
+}
