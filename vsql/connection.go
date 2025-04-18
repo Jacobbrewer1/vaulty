@@ -19,26 +19,26 @@ func ConnectDB(
 	client vaulty.Client,
 	vip *viper.Viper,
 	currentSecrets *hashiVault.Secret,
-) error {
+) (*Database, error) {
 	if vip == nil {
-		return errors.New("no viper configuration provided")
+		return nil, errors.New("no viper configuration provided")
 	}
 	if !vip.IsSet("vault") {
-		return errors.New("no vault configuration found")
+		return nil, errors.New("no vault configuration found")
 	} else if vip.IsSet("vault.database") {
-		return errors.New("no vault database configuration found")
+		return nil, errors.New("no vault database configuration found")
 	}
 	if client == nil {
-		return errors.New("no vault client provided")
+		return nil, errors.New("no vault client provided")
 	}
 	if currentSecrets == nil {
-		return errors.New("no vault database credentials provided")
+		return nil, errors.New("no vault database credentials provided")
 	}
 
 	connectionString := connectionStringFromViperAndVaultSecret(vip, currentSecrets)
 	dbConn, err := openDBConnection(ctx, connectionString)
 	if err != nil {
-		return fmt.Errorf("failed to open database connection: %w", err)
+		return nil, fmt.Errorf("failed to open database connection: %w", err)
 	}
 
 	db := NewDatabase(dbConn)
@@ -84,7 +84,7 @@ func ConnectDB(
 		}
 	}()
 
-	return nil
+	return db, nil
 }
 
 func openDBConnection(ctx context.Context, connectionString string) (*sqlx.DB, error) {
