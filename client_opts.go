@@ -141,7 +141,7 @@ func WithKubernetesAuthFromEnv() ClientOption {
 	return func(c *client) error {
 		roleFromEnv := os.Getenv(envServiceAccountName)
 		if roleFromEnv == "" {
-			return errors.New("role name is not set in environment variable")
+			return errors.New("role name is not set in environment variable " + envServiceAccountName)
 		}
 
 		return WithKubernetesServiceAccountAuth(roleFromEnv)(c)
