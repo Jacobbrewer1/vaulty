@@ -16,7 +16,6 @@ const (
 	TransitKeyPlainText  = "plaintext"
 
 	envServiceAccountName = "SERVICE_ACCOUNT_NAME" // nolint:gosec // This is detected as a secret
-	envKubernetesToken    = "KUBERNETES_TOKEN"     // nolint:gosec // This is detected as a secret
 
 	// KubernetesServiceAccountTokenPath is the path to the Kubernetes service account token.
 	kubernetesServiceAccountTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token" // nolint:gosec // This is detected as a secret
