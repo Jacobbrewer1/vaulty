@@ -109,7 +109,7 @@ func WithKvv2Mount(mount string) ClientOption {
 	}
 }
 
-func WithKubernetesAuthDefault(roleName string) ClientOption {
+func WithKubernetesServiceAccountAuth(roleName string) ClientOption {
 	return func(c *client) error {
 		if roleName == "" {
 			return errors.New("role name is empty")
@@ -136,7 +136,7 @@ func WithKubernetesAuthFromEnv() ClientOption {
 			return errors.New("role name is not set in environment variable")
 		}
 
-		return WithKubernetesAuthDefault(roleFromEnv)(c)
+		return WithKubernetesServiceAccountAuth(roleFromEnv)(c)
 	}
 }
 
