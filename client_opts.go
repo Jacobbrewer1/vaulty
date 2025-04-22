@@ -35,6 +35,7 @@ func WithGeneratedVaultClient(vaultAddress string) ClientOption {
 	return WithAddr(vaultAddress)
 }
 
+// WithAddr sets the address for the client.
 func WithAddr(addr string) ClientOption {
 	return func(c *client) error {
 		c.config.Address = addr
@@ -42,6 +43,7 @@ func WithAddr(addr string) ClientOption {
 	}
 }
 
+// WithConfig sets the config for the client.
 func WithConfig(config *hashiVault.Config) ClientOption {
 	return func(c *client) error {
 		c.config = config
@@ -49,6 +51,7 @@ func WithConfig(config *hashiVault.Config) ClientOption {
 	}
 }
 
+// WithTokenAuth sets the token for the client.
 func WithTokenAuth(token string) ClientOption {
 	return func(c *client) error {
 		if token == "" {
@@ -62,6 +65,7 @@ func WithTokenAuth(token string) ClientOption {
 	}
 }
 
+// WithAppRoleAuth sets the AppRole authentication method for the client.
 func WithAppRoleAuth(roleID, secretID string) ClientOption {
 	return func(c *client) error {
 		if roleID == "" {
@@ -82,6 +86,7 @@ func WithAppRoleAuth(roleID, secretID string) ClientOption {
 	}
 }
 
+// WithUserPassAuth sets the UserPass authentication method for the client.
 func WithUserPassAuth(username, password string) ClientOption {
 	return func(c *client) error {
 		if username == "" {
@@ -102,6 +107,7 @@ func WithUserPassAuth(username, password string) ClientOption {
 	}
 }
 
+// WithKvv2Mount sets the KVv2 mount point for the client.
 func WithKvv2Mount(mount string) ClientOption {
 	return func(c *client) error {
 		c.kvv2Mount = mount
@@ -109,6 +115,7 @@ func WithKvv2Mount(mount string) ClientOption {
 	}
 }
 
+// WithKubernetesServiceAccountAuth sets the Kubernetes authentication method for the client using a service account.
 func WithKubernetesServiceAccountAuth(roleName string) ClientOption {
 	return func(c *client) error {
 		if roleName == "" {
@@ -129,6 +136,7 @@ func WithKubernetesServiceAccountAuth(roleName string) ClientOption {
 	}
 }
 
+// WithKubernetesAuthFromEnv sets the Kubernetes authentication method for the client using a service account from environment variables.
 func WithKubernetesAuthFromEnv() ClientOption {
 	return func(c *client) error {
 		roleFromEnv := os.Getenv(envServiceAccountName)
@@ -140,6 +148,7 @@ func WithKubernetesAuthFromEnv() ClientOption {
 	}
 }
 
+// WithKubernetesAuth sets the Kubernetes authentication method for the client using the role and token provided.
 func WithKubernetesAuth(role, token string) ClientOption {
 	return func(c *client) error {
 		if role == "" {
